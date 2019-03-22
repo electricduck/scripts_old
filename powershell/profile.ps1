@@ -4,16 +4,17 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.4.2
+# Ducky's PowerShell Prompt, v19.5.0
 
 # clear window
 Clear-Host
 
 # set global variables
 $extraCommandsLocation = $profile.ToString().Replace(".ps1", ".extra.ps1")
+$gaaaay = $false
 $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
-$opSysRelease = ""
 $opSysHost = ([net.dns]::GetHostName())
+$opSysKernel = ""
 $powershellVersion = ""
 $powershellVersionShort = ""
 $user = ([Environment]::UserName)
@@ -132,33 +133,59 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.4.2"
+    return "19.5.0"
 }
 
 function Get-WelcomeMessage {
     $opSysRelease = Get-OSRelease
     $uptime = Get-OSUptime
 
+    if((get-date).ToString("MM") -eq "06")
+    {
+        $gaaaay = $true
+    }
+
+    if($gaaaay)
+    {
+        $logoColor1 = "DarkRed"
+        $logoColor2 = "Red"
+        $logoColor3 = "Yellow"
+        $logoColor4 = "Green"
+        $logoColor5 = "Cyan"
+        $logoColor6 = "Magenta"
+        $logoColor7 = "DarkMagenta"
+    }
+    else
+    {
+        $logoColor1 = "Cyan"
+        $logoColor2 = "Cyan"
+        $logoColor3 = "Cyan"
+        $logoColor4 = "Cyan"
+        $logoColor5 = "Cyan"
+        $logoColor6 = "Cyan"
+        $logoColor7 = "Cyan"
+    }
+
     Write-Host " "
-    Write-Host "       ############### " -f Cyan
-    Write-Host "      ##   ##########  " -f Cyan -n
+    Write-Host "       ############### " -f $logoColor1
+    Write-Host "      ##   ##########  " -f $logoColor2 -n
     Write-Host "$ " -f Red -n
     Write-Host "PowerShell $powershellVersion" -f White
-    Write-Host "     ####   ########   " -f Cyan -n
+    Write-Host "     ####   ########   " -f $logoColor3 -n
     Write-Host "# " -f Yellow -n
     Write-Host $Host.Name -f White
-    Write-Host "    ######   ######    " -f Cyan -n
+    Write-Host "    ######   ######    " -f $logoColor4 -n
     Write-Host "~ " -f Green -n
     Write-Host $opSysRelease -f White
-    Write-Host "   ####   ########     " -f Cyan -n
+    Write-Host "   ####   ########     " -f $logoColor5 -n
     Write-Host "@ " -f Cyan -n
     Write-Host $opSysHost -f White -n
     Write-Host "\" -f Gray -n
     Write-Host $user -f White
-    Write-Host "  ##   ###     ##      " -f Cyan -n
+    Write-Host "  ##   ###     ##      " -f $logoColor6 -n
     Write-Host "+ " -f Magenta -n
     Write-Host $uptime -f White
-    Write-Host " ###############       " -f Cyan
+    Write-Host " ###############       " -f $logoColor7
     Write-Host " "
 }
 
