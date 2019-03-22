@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.0.0
+# Ducky's PowerShell Prompt, v19.1.0
 
 # clear window
 Clear-Host
@@ -59,7 +59,30 @@ function Get-OSRelease {
             }
     } elseif($opSys -eq 'Windows') {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-        return (get-ciminstance Win32_OperatingSystem).Caption.Replace("Microsoft ", "")
+        #return (get-ciminstance Win32_OperatingSystem).Caption.Replace("Microsoft ", "")
+        switch($opSysVersion.Build) {
+            7600 { "Windows 7" }
+            7601 { "Windows 7 SP1" }
+            9200 { "Windows 8" }
+            9600 { "Windows 8.1" }
+            10240 { "Windows 10" }
+            10586 { "Windows 10 November Update" }
+            14393 { "Windows 10 Anniversary Update" }
+            15063 { "Windows 10 Creators Update" }
+            16299 { "Windows 10 Fall Creators Update" }
+            17134 { "Windows 10 April 2018 Update" }
+            17763 { "Windows 10 October 2018 Update" }
+            default {
+                if($opSysVersion.Build > 9841)
+                {
+                    "Windows 10 Insider Preview"
+                }
+                else
+                {
+                    "Windows"
+                }
+            }
+        }
     } elseif($opSysKernel -eq 'Linux') {
         "Linux" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
     }
@@ -97,7 +120,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.0.0"
+    return "19.1.0"
 }
 
 function Get-SystemLoad {
