@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.4.0
+# Ducky's PowerShell Prompt, v19.4.1
 
 # clear window
 Clear-Host
@@ -75,13 +75,13 @@ function Get-OSRelease {
             17134 { "Windows 10 April 2018 Update" }
             17763 { "Windows 10 October 2018 Update" }
             default {
-                if($opSysVersion.Build > 9841)
+                if($opSysVersion.Build -gt 9841)
                 {
                     "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
                 }
                 else
                 {
-                    "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
+                    "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
                 }
             }
         }
@@ -132,7 +132,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.4.0"
+    return "19.4.1"
 }
 
 function Get-WelcomeMessage {
