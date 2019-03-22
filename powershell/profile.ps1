@@ -1,3 +1,11 @@
+#  ____             _             ___  
+# |  _ \ _   _  ___| | ___   _   / \ \ 
+# | | | | | | |/ __| |/ | | | | / / \ \
+# | |_| | |_| | (__|   <| |_| |/ /  / /
+# |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
+# ====================== |___/ ========         
+# Ducky's PowerShell Prompt, v19.0.0
+
 # clear window
 Clear-Host
 
@@ -86,6 +94,10 @@ function Get-OSUptime {
     } else {
         return $totalHoursUptimeRounded.ToString() + " hours (" + $totalDaysUptime + " days)"
     }
+}
+
+function Get-ProfileVersion {
+    return "19.0.0"
 }
 
 function Get-SystemLoad {
