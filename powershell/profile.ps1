@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.4.1
+# Ducky's PowerShell Prompt, v19.4.2
 
 # clear window
 Clear-Host
@@ -95,7 +95,7 @@ function Get-OSRelease {
         else
         {
             $linuxOSDescription = lsb_release -d -s
-            $linuxOSDescription
+            $linuxOSDescription.ToString().Replace("elementary OS", "elementaryOS")
         }
     }
 }
@@ -132,7 +132,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.4.1"
+    return "19.4.2"
 }
 
 function Get-WelcomeMessage {
