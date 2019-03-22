@@ -1,1 +1,1 @@
-for dir in *; do ../../watermark.sh ../in/$dir ../watermarks/DuckyWatermark.png SouthEast +0+0 ../out/; done
+for dir in *; do ../../watermark.sh ../in/$dir ../watermarks/DuckyWatermark.png SouthEast +0+0 4 ../out/; done
