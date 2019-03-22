@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.1.0
+# Ducky's PowerShell Prompt, v19.1.1
 
 # clear window
 Clear-Host
@@ -54,7 +54,7 @@ function Get-OSRelease {
                 15 { "OSX El Capitan" }
                 16 { "macOS Sierra" }
                 17 { "macOS High Sierra" }
-                18 { "mac Mojave" }
+                18 { "macOS Mojave" }
                 default { "Darwin" }
             }
     } elseif($opSys -eq 'Windows') {
@@ -120,7 +120,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.1.0"
+    return "19.1.1"
 }
 
 function Get-SystemLoad {
