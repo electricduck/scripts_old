@@ -12,7 +12,7 @@ $user = ([Environment]::UserName)
 
 # set PowerShell version
 $powershellVersion = $PSVersionTable.PSVersion
-$powershellVersionShort = $powershellVersion.Major + "." + $powershellVersion.Minor
+$powershellVersionShort = $powershellVersion.Major.ToString() + "." + $powershellVersion.Minor.ToString()
 
 # set window properties
 $Host.ui.rawui.WindowTitle = $opSysHost + "\" + $user
