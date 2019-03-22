@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.2.0
+# Ducky's PowerShell Prompt, v19.3.0
 
 # clear window
 Clear-Host
@@ -93,7 +93,7 @@ function Get-OSUptime {
     $totalHoursUptimeRounded = 0
     $totalDaysUptime = 0
 
-    # set Uptime ints
+    # set uptime ints
     Try {
         $uptimeOutput = Get-Uptime
 
@@ -120,7 +120,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.2.0"
+    return "19.3.0"
 }
 
 function Get-WelcomeMessage {
@@ -177,33 +177,35 @@ function Set-WindowTitle {
     }
 }
 
-# inject custom prompt
+# add stuff to PATH
 $opSysKernel = Get-OSKernel
 if($opSysKernel -eq 'Darwin') {
     Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
-
-    # BUG: https://github.com/PowerShell/PowerShell/issues/4191
 } elseif($opSysKernel -eq 'Linux') {
     Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+}
 
-    # BUG: https://github.com/PowerShell/PowerShell/issues/4191
-} elseif($opSysKernel -eq 'Windows') {
-    function prompt {
+# inject custom prompt
+function prompt {
+    $fullLocation = (Get-Location).ToString()
+
+    if($opSysKernel -eq 'Windows')
+    {
         $fullLocation = "(" + (Get-Location).ToString().Replace(":", ")").Replace("\", "/")
-
-        Set-WindowTitle
-
-        Write-Host " "
-        Write-Host $opSysHost -n -f Magenta
-        Write-Host "\" -n
-        Write-Host $user -n -f Cyan
-        Write-Host ":" -n
-        Write-Host $fullLocation -f Yellow
-        Write-Host "posh-" -n
-        Write-Host $powershellVersionShort -n
-        Write-Host "$" -n -f Green
-        return ' '
     }
+
+    Set-WindowTitle
+
+    Write-Host " "
+    Write-Host $opSysHost -n -f Magenta
+    Write-Host "\" -n
+    Write-Host $user -n -f Cyan
+    Write-Host ":" -n
+    Write-Host $fullLocation -f Yellow
+    Write-Host "posh-" -n
+    Write-Host $powershellVersionShort -n
+    Write-Host "$" -n -f Green
+    return ' '
 }
 
 # run extra commands
