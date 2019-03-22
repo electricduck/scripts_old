@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.3.0
+# Ducky's PowerShell Prompt, v19.4.0
 
 # clear window
 Clear-Host
@@ -44,6 +44,8 @@ function Get-OSKernel {
 }
 
 function Get-OSRelease {
+    # TODO: Refactor this
+
     $opSysKernel = Get-OSKernel
     $opSysVersion = [Environment]::OSVersion.Version
 
@@ -84,7 +86,17 @@ function Get-OSRelease {
             }
         }
     } elseif($opSysKernel -eq 'Linux') {
-        "Linux" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
+        $linuxKernelVersion = $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
+
+        if (!(Get-Command "lsb_release" -errorAction SilentlyContinue))
+        {
+            "Linux" + " " + $linuxKernelVersion
+        }
+        else
+        {
+            $linuxOSDescription = lsb_release -d -s
+            $linuxOSDescription
+        }
     }
 }
 
@@ -120,7 +132,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.3.0"
+    return "19.4.0"
 }
 
 function Get-WelcomeMessage {
