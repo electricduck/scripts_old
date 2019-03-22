@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.1.1
+# Ducky's PowerShell Prompt, v19.2.0
 
 # clear window
 Clear-Host
@@ -55,7 +55,7 @@ function Get-OSRelease {
                 16 { "macOS Sierra" }
                 17 { "macOS High Sierra" }
                 18 { "macOS Mojave" }
-                default { "Darwin" }
+                default { "Darwin" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
             }
     } elseif($opSys -eq 'Windows') {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
@@ -75,11 +75,11 @@ function Get-OSRelease {
             default {
                 if($opSysVersion.Build > 9841)
                 {
-                    "Windows 10 Insider Preview"
+                    "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
                 }
                 else
                 {
-                    "Windows"
+                    "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
                 }
             }
         }
@@ -120,29 +120,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.1.1"
-}
-
-function Get-SystemLoad {
-    $opSysKernel = Get-OSKernel
-    
-    if($opSysKernel -eq 'Darwin') {
-        $uptimeCommand = "uptime"
-
-        $load = Invoke-Expression $uptimeCommand
-        $load = $load.split('load averages: ')[1]
-
-        return $load
-    } elseif($opSysKernel -eq 'Linux') {
-        $uptimeCommand = "uptime"
-
-        $load = Invoke-Expression $uptimeCommand
-        $load = $load.split('load average: ')[1]
-
-        return $load
-    } elseif($opSysKernel -eq 'Windows') {
-        return 'Windows does not calculate CPU load; exiting...'
-    }
+    return "19.2.0"
 }
 
 function Get-WelcomeMessage {
