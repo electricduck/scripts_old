@@ -1,1 +1,4 @@
+--- 22-Mar-2019 (Ducky)
+[Enum]::GetValues([System.ConsoleColor])
+--- 22-Mar-2019 (Ducky)
 01..70 | % { iwr ("https://yiffer.xyz/comics/Outside the Box/" + ("{0:00}" -f [convert]::ToInt32($_)) + ".jpg") -o ("{0:000}" -f [convert]::ToInt32($_) + ".jpg")}
