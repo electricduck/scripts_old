@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.2
+# Ducky's PowerShell Profile, v19.7.3
 
 function Get-ProfileVersion {
-    return "19.7.2"
+    return "19.7.3"
 }
 
 function Get-UpdateInstallMessage {
