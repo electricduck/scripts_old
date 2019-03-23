@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.11
+# Ducky's PowerShell Profile, v19.7.12
 
 function Get-ProfileVersion {
-    return "19.7.11"
+    return "19.7.12"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -259,26 +259,26 @@ if(Test-Path $extraCommandsLocation) {
 
 if($Host.Name.ToString() -eq "ConsoleHost") {
     Get-WelcomeMessage
-}
 
-function prompt {
-    $fullLocation = (Get-Location).ToString()
+    function prompt {
+        $fullLocation = (Get-Location).ToString()
 
-    if($opSysKernel -eq 'Windows')
-    {
-        $fullLocation = "(" + (Get-Location).ToString().Replace(":", ")").Replace("\", "/")
+        if($opSysKernel -eq 'Windows')
+        {
+            $fullLocation = "(" + (Get-Location).ToString().Replace(":", ")").Replace("\", "/")
+        }
+
+        Set-WindowTitle
+
+        Write-Host " "
+        Write-Host $opSysHost -n -f Magenta
+        Write-Host "\" -n
+        Write-Host $user -n -f Cyan
+        Write-Host ":" -n
+        Write-Host $fullLocation -f Yellow
+        Write-Host "posh-" -n
+        Write-Host $powershellVersionShort -n
+        Write-Host "$" -n -f Green
+        return ' '
     }
-
-    Set-WindowTitle
-
-    Write-Host " "
-    Write-Host $opSysHost -n -f Magenta
-    Write-Host "\" -n
-    Write-Host $user -n -f Cyan
-    Write-Host ":" -n
-    Write-Host $fullLocation -f Yellow
-    Write-Host "posh-" -n
-    Write-Host $powershellVersionShort -n
-    Write-Host "$" -n -f Green
-    return ' '
 }
