@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.16
+# Ducky's PowerShell Profile, v19.7.17
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -24,7 +24,7 @@
 # HOW TO INSTALL
 #  1) Download this file (and save it as 'install-profile.ps1')
 #  2) Run `./install-profile.ps1`
-#  3) Restart your prompt
+#  3) Restart your shell
 #
 # SUPPORTED ENVIRONMENTS
 #  - PowerShell 5.1
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.16"
+    return "19.7.17"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
