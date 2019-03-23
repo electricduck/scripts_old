@@ -3,11 +3,11 @@
 # | | | | | | |/ __| |/ | | | | / / \ \
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
-# ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.14
+# ====================== |___/ ========
+# Ducky's PowerShell Profile, v19.7.15
 
 function Get-ProfileVersion {
-    return "19.7.14"
+    return "19.7.15"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -121,7 +121,7 @@ function Get-OSRelease {
                 7600 { "Windows 7" }
                 7601 { "Windows 7 SP1" }
                 9200 { "Windows 8" }
-                9600 { "Windows 8.1"] }
+                9600 { "Windows 8.1" }
                 10240 { "Windows 10" }
                 10586 { "Windows 10 November Update" }
                 14393 { "Windows 10 Anniversary Update" }
