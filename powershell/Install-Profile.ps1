@@ -4,12 +4,12 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.17
+# Ducky's PowerShell Profile, v19.7.18
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
 # #        ###############                                                    #
-# #       ##   ##########  $ PowerShell 6.0.0                                 #
+# #       ##   ##########  $ PowerShell 6.1.0                                 #
 # #      ####   ########   # ConsoleHost                                      #
 # #     ######   ######    ~ Windows 10 October 2018 Update                   #
 # #    ####   ########     @ Hostname\Username                                #
@@ -29,7 +29,7 @@
 # SUPPORTED ENVIRONMENTS
 #  - PowerShell 5.1
 #   - Previous versions may work, but they have not been tested.
-#  - PowerShell Core 6.0
+#  - PowerShell Core 6.0 (and above)
 #  - Any OS that supports PowerShell (or PowerShell Core)
 #   - I am no longer in posession of a macOS install, however, there
 #     is no reason for things to not work.
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.17"
+    return "19.7.18"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
