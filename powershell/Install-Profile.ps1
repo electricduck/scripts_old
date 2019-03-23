@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.9
+# Ducky's PowerShell Profile, v19.7.10
 
 function Get-ProfileVersion {
-    return "19.7.9"
+    return "19.7.10"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -116,7 +116,7 @@ function Get-OSRelease {
         else
         {
             $linuxOSDescription = lsb_release -d -s
-            $linuxOSDescription.ToString().Replace("elementary OS", "elementaryOS")
+            $linuxOSDescription.ToString().Replace("elementary OS", "elementaryOS").Replace("Debian GNU/Linux", "Debian")
         }
     }
 }
