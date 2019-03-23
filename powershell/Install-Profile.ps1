@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.13
+# Ducky's PowerShell Profile, v19.7.14
 
 function Get-ProfileVersion {
-    return "19.7.13"
+    return "19.7.14"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -90,7 +90,7 @@ function Get-OSRelease {
             $isServer = $true
         }
 
-        if($isServer -eq true)
+        if($isServer -eq $true)
         {
             switch($opsysVersion.Build)
             {
