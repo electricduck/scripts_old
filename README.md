@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://t.me/clunkerbot">
+  <a href="https://github.com/electricduck/scripts">
     <img src="https://i.imgur.com/o6S0OiU.png" width="80" height="80">
   </a>
 
