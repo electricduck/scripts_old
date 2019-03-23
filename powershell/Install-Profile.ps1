@@ -4,16 +4,34 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.6.0
+# Ducky's PowerShell Profile, v19.7.0
 
-$newInstall = $false
+function Get-ProfileVersion {
+    return "19.7.0"
+}
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
 {
     New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
     Copy-Item $MyInvocation.MyCommand.Path $profile
 
-    $newInstall = $true
+    $profileVersion = Get-ProfileVersion
+
+    Write-Host "Installed " -f Gray -n
+    Write-Host "Ducky's PowerShell Profile " -f Cyan -n
+    Write-Host $profileVersion -f White -n
+    Write-Host ". Enjoy!" -f Gray
+    Write-Host "================================================================================"  -f DarkGray
+    Write-Host "Remember to stay up-to-date; use " -f Gray -n
+    Write-Host "Update-Profile " -f Yellow -n
+    Write-Host "to automagically download and" -f Gray
+    Write-Host "install. If you regret your current life decisions, turn back the clock with " -f Gray
+    Write-Host "Uninstall-Profile" -f Yellow -n
+    Write-Host "." -f Gray
+    Write-Host "================================================================================"  -f DarkGray
+    Write-Host "Restart your shell!" -f White
+
+    Exit 0
 }
 
 Clear-Host
@@ -132,10 +150,6 @@ function Get-OSUptime {
     }
 }
 
-function Get-ProfileVersion {
-    return "19.6.0"
-}
-
 function Get-WelcomeMessage {
     $opSysRelease = Get-OSRelease
     $uptime = Get-OSUptime
@@ -244,25 +258,6 @@ if(Test-Path $extraCommandsLocation) {
 
 if($Host.Name.ToString() -eq "ConsoleHost") {
     Get-WelcomeMessage
-
-    if($newInstall -eq $true)
-    {
-        $profileVersion = Get-ProfileVersion
-
-        Write-Host " Welcome to " -f Gray -n
-        Write-Host "Ducky's PowerShell Profile " -f Cyan -n
-        Write-Host $profileVersion -f White -n
-        Write-Host ". Enjoy!" -f Gray
-        Write-Host " ==============================================================================="  -f DarkGray
-        Write-Host " Remember to stay up-to-date; use " -f Gray -n
-        Write-Host "Update-Profile " -f Yellow -n
-        Write-Host "to automagically download and" -f Gray
-        Write-Host " install. If you regret your current life decisions, turn back the clock with " -f Gray
-        Write-Host " Uninstall-Profile" -f Yellow -n
-        Write-Host "." -f Gray
-
-        $newInstall = $false
-    }
 }
 
 function prompt {
