@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.0
+# Ducky's PowerShell Profile, v19.7.1
 
 function Get-ProfileVersion {
-    return "19.7.0"
+    return "19.7.1"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -29,7 +29,7 @@ if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
     Write-Host "Uninstall-Profile" -f Yellow -n
     Write-Host "." -f Gray
     Write-Host "================================================================================"  -f DarkGray
-    Write-Host "Restart your shell!" -f White
+    Write-Host "Restart your shell to use!" -f White
 
     Exit 0
 }
