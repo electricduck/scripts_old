@@ -4,10 +4,77 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.15
+# Ducky's PowerShell Profile, v19.7.16
+################################################################################
+# #[Hostname\Username:Me]##################################################[x]#
+# #                                                                           #
+# #        ###############                                                    #
+# #       ##   ##########  $ PowerShell 6.0.0                                 #
+# #      ####   ########   # ConsoleHost                                      #
+# #     ######   ######    ~ Windows 10 October 2018 Update                   #
+# #    ####   ########     @ Hostname\Username                                #
+# #   ##   ###     ##      + 2 hours                                          #
+# #  ###############                                                          #
+# #                                                                           #
+# # Hostname\Username:(C)/Users/Me                                            #
+# # posh-6.1$ _                                                               #
+# #                                                                           #
+# #############################################################################
+#
+# HOW TO INSTALL
+#  1) Download this file (and save it as 'install-profile.ps1')
+#  2) Run `./install-profile.ps1`
+#  3) Restart your prompt
+#
+# SUPPORTED ENVIRONMENTS
+#  - PowerShell 5.1
+#   - Previous versions may work, but they have not been tested.
+#  - PowerShell Core 6.0
+#  - Any OS that supports PowerShell (or PowerShell Core)
+#   - I am no longer in posession of a macOS install, however, there
+#     is no reason for things to not work.
+#
+# INJECTING ADDITIONAL COMMANDS
+#  If you need to inject anything extra (like a custom PATH, or aliases),
+#  you will find them in the same directory as this profile. To reveal the
+#  location, run:
+#   `$extraCommandsLocation`
+#  This file is not create by default, but you can create it with:
+#   `New-Item -Type File $extraCommandsLocation`
+#  You can then edit it using your favourite text editor, like:
+#   `nano $extraCommandsLocation`;
+#   `notepad $extraCommandsLocation`;
+#   `code $extraCommandsLocation`
+#  Add commands on each line (no empty lines!), and these will be ran on
+#  startup. For example, to add extra things to the PATH, add:
+#   `$Env:PATH += ":/opt/myapp/:/home/me/bin/"`
+#
+# ADDITIONAL CONFIGURATION
+#  This script is built to be minimal and out-of-the-box, so no additional
+#  configuration is available (other than injecting custom commands, as above).
+#  There's plenty of other resources out there if you need such a thing.
+#
+# UPDATING
+#  This profile is updated often, so make sure to run `Update-Profile` every
+#  once-in-a-while. This will download the script and replace your old $profile.
+#
+# UNINSTALLING
+#  To remove, run `Uninstall-Profile`. This will leave behind the
+#  $extraCommandsLocation file, and will not affect anything else.
+#
+# OTHER COMMANDS
+#  `Get-ProfileVersion`: [String] Get version of Ducky's PowerShell Profile you
+#                        are using.
+#
+# CONTRIBUTING
+#  This is part of Ducky's scripts repository, found at
+#  https://github.com/electricduck/scripts. You may submit PRs and issues there.
+#
+# ENJOY! :)
+################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.15"
+    return "19.7.16"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
