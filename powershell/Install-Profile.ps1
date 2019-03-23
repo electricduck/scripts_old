@@ -4,12 +4,20 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Prompt, v19.5.0
+# Ducky's PowerShell Profile, v19.6.0
 
-# clear window
+$newInstall = $false
+
+if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
+{
+    New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
+    Copy-Item $MyInvocation.MyCommand.Path $profile
+
+    $newInstall = $true
+}
+
 Clear-Host
 
-# set global variables
 $extraCommandsLocation = $profile.ToString().Replace(".ps1", ".extra.ps1")
 $gaaaay = $false
 $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
@@ -19,17 +27,11 @@ $powershellVersion = ""
 $powershellVersionShort = ""
 $user = ([Environment]::UserName)
 
-# set PowerShell version
 $powershellVersion = $PSVersionTable.PSVersion
 $powershellVersionShort = $powershellVersion.Major.ToString() + "." + $powershellVersion.Minor.ToString()
 
-# set window properties
-$Host.ui.rawui.WindowTitle = $opSysHost + "\" + $user
-
-# overwrite in-built aliases
 Set-Alias -Name clear -Value Reload-Shell -Option AllScope
 
-# inject extra commands
 function Get-OSKernel {
     $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
 
@@ -106,7 +108,6 @@ function Get-OSUptime {
     $totalHoursUptimeRounded = 0
     $totalDaysUptime = 0
 
-    # set uptime ints
     Try {
         $uptimeOutput = Get-Uptime
 
@@ -122,7 +123,6 @@ function Get-OSUptime {
         $totalDaysUptime = $uptimeOutput.Days
     }
 
-    # get uptime
     if($totalDaysUptime -eq 0) {
         return $totalHoursUptimeRounded.ToString() + " hours"
     } elseif ($totalDaysUptime -eq 1) {
@@ -133,7 +133,7 @@ function Get-OSUptime {
 }
 
 function Get-ProfileVersion {
-    return "19.5.0"
+    return "19.6.0"
 }
 
 function Get-WelcomeMessage {
@@ -216,7 +216,18 @@ function Set-WindowTitle {
     }
 }
 
-# add stuff to PATH
+function Update-Profile {
+    New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
+    Invoke-WebRequest https://raw.githubusercontent.com/electricduck/scripts/master/powershell/Install-Profile.ps1 -out $profile | Out-Null
+
+    $newInstall = $true
+}
+
+function Uninstall-Profile {
+    Remove-Item -Force $profile | Out-Null
+    Stop-Process -Id $PID
+}
+
 $opSysKernel = Get-OSKernel
 if($opSysKernel -eq 'Darwin') {
     Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
@@ -224,7 +235,36 @@ if($opSysKernel -eq 'Darwin') {
     Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 }
 
-# inject custom prompt
+if(Test-Path $extraCommandsLocation) {
+    $commands = Get-Content $extraCommandsLocation
+    foreach($command in $commands) {
+        Invoke-Expression -Command $command
+    }
+}
+
+if($Host.Name.ToString() -eq "ConsoleHost") {
+    Get-WelcomeMessage
+
+    if($newInstall -eq $true)
+    {
+        $profileVersion = Get-ProfileVersion
+
+        Write-Host " Welcome to " -f Gray -n
+        Write-Host "Ducky's PowerShell Profile " -f Cyan -n
+        Write-Host $profileVersion -f White -n
+        Write-Host ". Enjoy!" -f Gray
+        Write-Host " ==============================================================================="  -f DarkGray
+        Write-Host " Remember to stay up-to-date; use " -f Gray -n
+        Write-Host "Update-Profile " -f Yellow -n
+        Write-Host "to automagically download and" -f Gray
+        Write-Host " install. If you regret your current life decisions, turn back the clock with " -f Gray
+        Write-Host " Uninstall-Profile" -f Yellow -n
+        Write-Host "." -f Gray
+
+        $newInstall = $false
+    }
+}
+
 function prompt {
     $fullLocation = (Get-Location).ToString()
 
@@ -245,17 +285,4 @@ function prompt {
     Write-Host $powershellVersionShort -n
     Write-Host "$" -n -f Green
     return ' '
-}
-
-# run extra commands
-if(Test-Path $extraCommandsLocation) {
-    $commands = Get-Content $extraCommandsLocation
-    foreach($command in $commands) {
-        Invoke-Expression -Command $command
-    }
-}
-
-# say hi
-if($Host.Name.ToString() -eq "ConsoleHost") {
-    Get-WelcomeMessage
 }
