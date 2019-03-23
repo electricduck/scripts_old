@@ -4,17 +4,13 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.1
+# Ducky's PowerShell Profile, v19.7.2
 
 function Get-ProfileVersion {
-    return "19.7.1"
+    return "19.7.2"
 }
 
-if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
-{
-    New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
-    Copy-Item $MyInvocation.MyCommand.Path $profile
-
+function Get-UpdateInstallMessage {
     $profileVersion = Get-ProfileVersion
 
     Write-Host "Installed " -f Gray -n
@@ -30,6 +26,14 @@ if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
     Write-Host "." -f Gray
     Write-Host "================================================================================"  -f DarkGray
     Write-Host "Restart your shell to use!" -f White
+}
+
+if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
+{
+    New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
+    Copy-Item $MyInvocation.MyCommand.Path $profile
+
+    Get-UpdateInstallMessage
 
     Exit 0
 }
@@ -234,7 +238,7 @@ function Update-Profile {
     New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
     Invoke-WebRequest https://raw.githubusercontent.com/electricduck/scripts/master/powershell/Install-Profile.ps1 -out $profile | Out-Null
 
-    $newInstall = $true
+    Get-UpdateInstallMessage
 }
 
 function Uninstall-Profile {
