@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.12
+# Ducky's PowerShell Profile, v19.7.13
 
 function Get-ProfileVersion {
-    return "19.7.12"
+    return "19.7.13"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -82,27 +82,62 @@ function Get-OSRelease {
             }
     } elseif($opSys -eq 'Windows') {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-        #return (get-ciminstance Win32_OperatingSystem).Caption.Replace("Microsoft ", "")
-        switch($opSysVersion.Build) {
-            7600 { "Windows 7" }
-            7601 { "Windows 7 SP1" }
-            9200 { "Windows 8" }
-            9600 { "Windows 8.1" }
-            10240 { "Windows 10" }
-            10586 { "Windows 10 November Update" }
-            14393 { "Windows 10 Anniversary Update" }
-            15063 { "Windows 10 Creators Update" }
-            16299 { "Windows 10 Fall Creators Update" }
-            17134 { "Windows 10 April 2018 Update" }
-            17763 { "Windows 10 October 2018 Update" }
-            default {
-                if($opSysVersion.Build -gt 9841)
-                {
-                    "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
+        $caption = (get-ciminstance Win32_OperatingSystem).Caption
+        $isServer = $false
+
+        if($caption.IndexOf("Windows Server") -gt 0)
+        {
+            $isServer = $true
+        }
+
+        if($isServer -eq true)
+        {
+            switch($opsysVersion.Build)
+            {
+                7600 { "Windows Server 2008 R2" }
+                7601 { "Windows Server 2008 R2 SP1"}
+                9200 { "Windows Server 2012" }
+                9600 { "Windows Server 2012 R2"}
+                14393 { "Windows Server 2016" }
+                16299 { "Windows Server SARC 1709" }
+                17134 { "Windows Server SARC 1803" }
+                17763 { "Windows Server 2019" }
+                default {
+                    if($opSysVersion.Build -gt 9841)
+                    {
+                        "Windows Server vNext (Build " + $opSysVersion.Build.ToString() + ")"
+                    }
+                    else
+                    {
+                        "Windows Server " + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
+                    }  
                 }
-                else
-                {
-                    "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
+            }
+        }
+        else
+        {
+            switch($opSysVersion.Build)
+            {
+                7600 { "Windows 7" }
+                7601 { "Windows 7 SP1" }
+                9200 { "Windows 8" }
+                9600 { "Windows 8.1"] }
+                10240 { "Windows 10" }
+                10586 { "Windows 10 November Update" }
+                14393 { "Windows 10 Anniversary Update" }
+                15063 { "Windows 10 Creators Update" }
+                16299 { "Windows 10 Fall Creators Update" }
+                17134 { "Windows 10 April 2018 Update" }
+                17763 { "Windows 10 October 2018 Update" }
+                default {
+                    if($opSysVersion.Build -gt 9841)
+                    {
+                        "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
+                    }
+                    else
+                    {
+                        "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
+                    }
                 }
             }
         }
