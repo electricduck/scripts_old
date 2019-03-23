@@ -4,10 +4,10 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========         
-# Ducky's PowerShell Profile, v19.7.6
+# Ducky's PowerShell Profile, v19.7.7
 
 function Get-ProfileVersion {
-    return "19.7.6"
+    return "19.7.7"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -235,7 +235,7 @@ function Update-Profile {
     Invoke-WebRequest https://raw.githubusercontent.com/electricduck/scripts/master/powershell/Install-Profile.ps1 -out $profile | Out-Null
 
     Write-Host "Ducky's PowerShell Profile " -f Cyan -n
-    Write-Host "has been updated." -f Gray -n
+    Write-Host "has been updated. " -f Gray -n
     Write-Host "Restart your shell to use!" -f White
 }
 
