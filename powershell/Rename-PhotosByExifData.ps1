@@ -26,6 +26,7 @@ $cameraModelDictionary.Add("NIKOND5100", "D5100")                       # Nikon 
 $cameraModelDictionary.Add("Lumia930", "Lumia 930")                     # Nokia Lumia 930
 $cameraModelDictionary.Add("Lumia1320", "Lumia 1320")                   # Nokia Lumia 1320
 $cameraModelDictionary.Add("VerneeMIX2", "MIX 2")                       # Vernee MIX 2
+$cameraModelDictionary.Add("MiA2", "Mi A2")				# Xiaomi Mi A2
 $cameraModelDictionary.Add("MiMax", "Mi Max")                           # Xiaomi Mi Max
 $cameraModelDictionary.Add("Redmi5A", "Redmi 5A")                       # Xiaomi Redmi 5A
 
