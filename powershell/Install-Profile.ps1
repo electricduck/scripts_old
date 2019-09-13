@@ -145,11 +145,12 @@ function Get-OSRelease {
                 16 { "macOS Sierra" }
                 17 { "macOS High Sierra" }
                 18 { "macOS Mojave" }
+                19 { "macOS Catalina" }
                 default { "Darwin" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
             }
     } elseif($opSys -eq 'Windows') {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-        $caption = (get-ciminstance Win32_OperatingSystem).Caption
+        $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
         $isServer = $false
 
         if($caption.IndexOf("Windows Server") -gt 0)
@@ -168,7 +169,9 @@ function Get-OSRelease {
                 14393 { "Windows Server 2016" }
                 16299 { "Windows Server SARC 1709" }
                 17134 { "Windows Server SARC 1803" }
+                #17763 { "Windows Server SARC 1809" }
                 17763 { "Windows Server 2019" }
+                18362 { "Windows Server SARC 1903" }
                 default {
                     if($opSysVersion.Build -gt 9841)
                     {
