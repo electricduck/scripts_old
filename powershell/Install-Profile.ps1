@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.19
+# Ducky's PowerShell Profile, v19.7.20
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.19"
+    return "19.7.20"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -200,6 +200,7 @@ function Get-OSRelease {
                 17134 { "Windows 10 April 2018 Update" }
                 17763 { "Windows 10 October 2018 Update" }
                 18362 { "Windows 10 May 2019 Update" }
+                18363 { "Windows 10 November 2019 Update" }
                 default {
                     if($opSysVersion.Build -gt 9841)
                     {
