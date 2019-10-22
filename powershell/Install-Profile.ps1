@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.22
+# Ducky's PowerShell Profile, v19.7.23
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.22"
+    return "19.7.23"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -101,8 +101,20 @@ if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
     Exit 0
 }
 
+enum OS {
+    Windows
+    MacOS
+    Linux
+}
+
+enum Themes {
+    Normal
+    Gay
+}
+
 $extraCommandsLocation = $profile.ToString().Replace(".ps1", ".extra.ps1")
-$opSysHost = ([net.dns]::GetHostName())
+$hostname = ([net.dns]::GetHostName())
+[OS]$global:opSys = [OS]::Windows
 $powershellVersion = ""
 $powershellVersionShort = ""
 $user = ([Environment]::UserName)
@@ -112,20 +124,96 @@ $powershellVersionShort = $powershellVersion.Major.ToString() + "." + $powershel
 
 Set-Alias -Name clear -Value Reload-Shell -Option AllScope
 
-enum Themes {
-    Normal
-    Gay
-}
-
 [Themes]$global:currentTheme = [Themes]::Normal
 
 function Get-OSRelease {
     # TODO: Refactor this
 
+    if($powershellVersion.Major -lt 6)
+    {
+        $global:opSys = [OS]::Windows
+    }
+    else
+    {
+        if($IsWindows) { $global:opSys = [OS]::Windows }
+        if($IsMacOS) { $global:opSys = [OS]::MacOS }
+        if($IsLinux) { $global:opSys = [OS]::Linux }
+    }
+
     $opSysVersion = [Environment]::OSVersion.Version
 
-    if($IsMacOS) {
-        switch ($opSysVersion.Major)
+    switch($global:opSys)
+    {
+        Windows
+        {
+            #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
+            $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
+            $isServer = $false
+
+            if($caption.IndexOf("Windows Server") -gt 0)
+            {
+                $isServer = $true
+            }
+
+            if($isServer -eq $true)
+            {
+                switch($opsysVersion.Build)
+                {
+                    7600 { "Windows Server 2008 R2" }
+                    7601 { "Windows Server 2008 R2 SP1"}
+                    9200 { "Windows Server 2012" }
+                    9600 { "Windows Server 2012 R2"}
+                    14393 { "Windows Server 2016" }
+                    16299 { "Windows Server SARC 1709" }
+                    17134 { "Windows Server SARC 1803" }
+                    #17763 { "Windows Server SARC 1809" }
+                    17763 { "Windows Server 2019" }
+                    18362 { "Windows Server SARC 1903" }
+                    default {
+                        if($opSysVersion.Build -gt 9841)
+                        {
+                            "Windows Server vNext (Build " + $opSysVersion.Build.ToString() + ")"
+                        }
+                        else
+                        {
+                            "Windows Server " + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
+                        }  
+                    }
+                }
+            }
+            else
+            {
+                switch($opSysVersion.Build)
+                {
+                    7600 { "Windows 7" }
+                    7601 { "Windows 7 SP1" }
+                    9200 { "Windows 8" }
+                    9600 { "Windows 8.1" }
+                    10240 { "Windows 10" }
+                    10586 { "Windows 10 November Update" }
+                    14393 { "Windows 10 Anniversary Update" }
+                    15063 { "Windows 10 Creators Update" }
+                    16299 { "Windows 10 Fall Creators Update" }
+                    17134 { "Windows 10 April 2018 Update" }
+                    17763 { "Windows 10 October 2018 Update" }
+                    18362 { "Windows 10 May 2019 Update" }
+                    18363 { "Windows 10 November 2019 Update" }
+                    default {
+                        if($opSysVersion.Build -gt 9841)
+                        {
+                            "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
+                        }
+                        else
+                        {
+                            "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
+                        }
+                    }
+                }
+            }
+        }
+        MacOS
+        {
+            switch ($opSysVersion.Major)
             {
                 14 { "OSX Yosemite" }
                 15 { "OSX El Capitan" }
@@ -135,86 +223,20 @@ function Get-OSRelease {
                 19 { "macOS Catalina" }
                 default { "macOS" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
             }
-    }
-    
-    if($IsWindows) {
-        #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-        $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
-        $isServer = $false
-
-        if($caption.IndexOf("Windows Server") -gt 0)
-        {
-            $isServer = $true
         }
-
-        if($isServer -eq $true)
+        Linux
         {
-            switch($opsysVersion.Build)
+            $linuxKernelVersion = $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
+
+            if (!(Get-Command "lsb_release" -errorAction SilentlyContinue))
             {
-                7600 { "Windows Server 2008 R2" }
-                7601 { "Windows Server 2008 R2 SP1"}
-                9200 { "Windows Server 2012" }
-                9600 { "Windows Server 2012 R2"}
-                14393 { "Windows Server 2016" }
-                16299 { "Windows Server SARC 1709" }
-                17134 { "Windows Server SARC 1803" }
-                #17763 { "Windows Server SARC 1809" }
-                17763 { "Windows Server 2019" }
-                18362 { "Windows Server SARC 1903" }
-                default {
-                    if($opSysVersion.Build -gt 9841)
-                    {
-                        "Windows Server vNext (Build " + $opSysVersion.Build.ToString() + ")"
-                    }
-                    else
-                    {
-                        "Windows Server " + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
-                    }  
-                }
+                "Linux" + " " + $linuxKernelVersion
             }
-        }
-        else
-        {
-            switch($opSysVersion.Build)
+            else
             {
-                7600 { "Windows 7" }
-                7601 { "Windows 7 SP1" }
-                9200 { "Windows 8" }
-                9600 { "Windows 8.1" }
-                10240 { "Windows 10" }
-                10586 { "Windows 10 November Update" }
-                14393 { "Windows 10 Anniversary Update" }
-                15063 { "Windows 10 Creators Update" }
-                16299 { "Windows 10 Fall Creators Update" }
-                17134 { "Windows 10 April 2018 Update" }
-                17763 { "Windows 10 October 2018 Update" }
-                18362 { "Windows 10 May 2019 Update" }
-                18363 { "Windows 10 November 2019 Update" }
-                default {
-                    if($opSysVersion.Build -gt 9841)
-                    {
-                        "Windows 10 Insider (Build " + $opSysVersion.Build.ToString() + ")"
-                    }
-                    else
-                    {
-                        "Windows" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() + "." + $opSysVersion.Build.ToString()
-                    }
-                }
+                $linuxOSDescription = lsb_release -d -s
+                $linuxOSDescription.ToString().Replace("elementary OS", "elementaryOS").Replace("Debian GNU/Linux", "Debian")
             }
-        }
-    }
-    
-    if($IsLinux) {
-        $linuxKernelVersion = $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
-
-        if (!(Get-Command "lsb_release" -errorAction SilentlyContinue))
-        {
-            "Linux" + " " + $linuxKernelVersion
-        }
-        else
-        {
-            $linuxOSDescription = lsb_release -d -s
-            $linuxOSDescription.ToString().Replace("elementary OS", "elementaryOS").Replace("Debian GNU/Linux", "Debian")
         }
     }
 }
@@ -307,7 +329,7 @@ function Get-WelcomeMessage {
     Write-Host $opSysRelease -f White
     Write-Host "   ####   ########     " -f $global:logoColor5 -n
     Write-Host "@ " -f Cyan -n
-    Write-Host $opSysHost -f White -n
+    Write-Host $hostname -f White -n
     Write-Host "\" -f Gray -n
     Write-Host $user -f White
     Write-Host "  ##   ###     ##      " -f $global:logoColor6 -n
@@ -328,19 +350,19 @@ function Set-WindowTitle {
         [string]$newTitle
     )
 
-    if($IsWindows) {
+    if($global:opSys -eq [OS]::Windows) {
         $shortLocation = Split-Path -leaf -path (Get-Location)
 
         if($newTitle) {
             $Host.ui.rawui.WindowTitle = $newTitle
         } else {
-            $Host.ui.rawui.WindowTitle = $opSysHost + "\" + $user + ":" + $shortLocation
+            $Host.ui.rawui.WindowTitle = $hostname + "\" + $user + ":" + $shortLocation
         }
     } else {
         if($newTitle) {
             $Host.ui.rawui.WindowTitle = $newTitle
         } else {
-            $Host.ui.rawui.WindowTitle = $opSysHost + "\" + $user
+            $Host.ui.rawui.WindowTitle = $hostname + "\" + $user
         }
     }
 }
@@ -359,11 +381,16 @@ function Uninstall-Profile {
 }
 
 function Set-DefaultPath {
-    if($IsMacOS) {
-        Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
-    }
-    if($IsLinux) {
-        Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    switch($opSys)
+    {
+        MacOS
+        {
+            Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
+        }
+        Linux
+        {
+            Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        }
     }
 }
 
@@ -384,7 +411,7 @@ if($Host.Name.ToString() -eq "ConsoleHost") {
     function prompt {
         $fullLocation = (Get-Location).ToString()
 
-        if($IsWindows -eq 'Windows')
+        if($global:opSys -eq [OS]::Windows)
         {
             $fullLocation = "(" + (Get-Location).ToString().Replace(":", ")").Replace("\", "/")
         }
@@ -392,7 +419,7 @@ if($Host.Name.ToString() -eq "ConsoleHost") {
         Set-WindowTitle
 
         Write-Host " "
-        Write-Host $opSysHost -n -f Magenta
+        Write-Host $hostname -n -f Magenta
         Write-Host "\" -n
         Write-Host $user -n -f Cyan
         Write-Host ":" -n
