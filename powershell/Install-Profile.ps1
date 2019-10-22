@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.21
+# Ducky's PowerShell Profile, v19.7.22
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.21"
+    return "19.7.22"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -102,9 +102,7 @@ if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
 }
 
 $extraCommandsLocation = $profile.ToString().Replace(".ps1", ".extra.ps1")
-$opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
 $opSysHost = ([net.dns]::GetHostName())
-$opSysKernel = ""
 $powershellVersion = ""
 $powershellVersionShort = ""
 $user = ([Environment]::UserName)
@@ -121,27 +119,12 @@ enum Themes {
 
 [Themes]$global:currentTheme = [Themes]::Normal
 
-function Get-OSKernel {
-    $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
-
-    if($opSys -eq 'Unix') {
-        $unameCommand = "uname -s"
-
-        $unixKernel = Invoke-Expression $unameCommand
-
-        return $unixKernel
-    } elseif($opSys -eq 'Windows') {
-        return 'Windows'
-    }
-}
-
 function Get-OSRelease {
     # TODO: Refactor this
 
-    $opSysKernel = Get-OSKernel
     $opSysVersion = [Environment]::OSVersion.Version
 
-    if($opSysKernel -eq 'Darwin') {
+    if($IsMacOS) {
         switch ($opSysVersion.Major)
             {
                 14 { "OSX Yosemite" }
@@ -150,9 +133,11 @@ function Get-OSRelease {
                 17 { "macOS High Sierra" }
                 18 { "macOS Mojave" }
                 19 { "macOS Catalina" }
-                default { "Darwin" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
+                default { "macOS" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
             }
-    } elseif($opSys -eq 'Windows') {
+    }
+    
+    if($IsWindows) {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
         $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
         $isServer = $false
@@ -217,7 +202,9 @@ function Get-OSRelease {
                 }
             }
         }
-    } elseif($opSysKernel -eq 'Linux') {
+    }
+    
+    if($IsLinux) {
         $linuxKernelVersion = $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString()
 
         if (!(Get-Command "lsb_release" -errorAction SilentlyContinue))
@@ -341,7 +328,7 @@ function Set-WindowTitle {
         [string]$newTitle
     )
 
-    if($opSysKernel -eq 'Windows') {
+    if($IsWindows) {
         $shortLocation = Split-Path -leaf -path (Get-Location)
 
         if($newTitle) {
@@ -371,27 +358,33 @@ function Uninstall-Profile {
     Stop-Process -Id $PID
 }
 
-$opSysKernel = Get-OSKernel
-if($opSysKernel -eq 'Darwin') {
-    Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
-} elseif($opSysKernel -eq 'Linux') {
-    Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+function Set-DefaultPath {
+    if($IsMacOS) {
+        Set-Item Env:PATH "/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin"
+    }
+    if($IsLinux) {
+        Set-Item Env:PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    }
 }
 
-if(Test-Path $extraCommandsLocation) {
-    $commands = Get-Content $extraCommandsLocation
-    foreach($command in $commands) {
-        Invoke-Expression -Command $command
+function Invoke-ExtraCommands {
+    if(Test-Path $extraCommandsLocation) {
+        $commands = Get-Content $extraCommandsLocation
+        foreach($command in $commands) {
+            Invoke-Expression -Command $command
+        }
     }
 }
 
 if($Host.Name.ToString() -eq "ConsoleHost") {
+    Set-DefaultPath
+    Invoke-ExtraCommands
     Reload-Shell
 
     function prompt {
         $fullLocation = (Get-Location).ToString()
 
-        if($opSysKernel -eq 'Windows')
+        if($IsWindows -eq 'Windows')
         {
             $fullLocation = "(" + (Get-Location).ToString().Replace(":", ")").Replace("\", "/")
         }
