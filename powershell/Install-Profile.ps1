@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.18
+# Ducky's PowerShell Profile, v19.7.20
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.18"
+    return "19.7.20"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -145,11 +145,12 @@ function Get-OSRelease {
                 16 { "macOS Sierra" }
                 17 { "macOS High Sierra" }
                 18 { "macOS Mojave" }
+                19 { "macOS Catalina" }
                 default { "Darwin" + " " + $opSysVersion.Major.ToString() + "." + $opSysVersion.Minor.ToString() }
             }
     } elseif($opSys -eq 'Windows') {
         #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-        $caption = (get-ciminstance Win32_OperatingSystem).Caption
+        $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
         $isServer = $false
 
         if($caption.IndexOf("Windows Server") -gt 0)
@@ -168,7 +169,9 @@ function Get-OSRelease {
                 14393 { "Windows Server 2016" }
                 16299 { "Windows Server SARC 1709" }
                 17134 { "Windows Server SARC 1803" }
+                #17763 { "Windows Server SARC 1809" }
                 17763 { "Windows Server 2019" }
+                18362 { "Windows Server SARC 1903" }
                 default {
                     if($opSysVersion.Build -gt 9841)
                     {
@@ -196,6 +199,8 @@ function Get-OSRelease {
                 16299 { "Windows 10 Fall Creators Update" }
                 17134 { "Windows 10 April 2018 Update" }
                 17763 { "Windows 10 October 2018 Update" }
+                18362 { "Windows 10 May 2019 Update" }
+                18363 { "Windows 10 November 2019 Update" }
                 default {
                     if($opSysVersion.Build -gt 9841)
                     {
