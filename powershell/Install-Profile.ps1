@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.20
+# Ducky's PowerShell Profile, v19.7.21
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.20"
+    return "19.7.21"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -101,10 +101,7 @@ if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
     Exit 0
 }
 
-Clear-Host
-
 $extraCommandsLocation = $profile.ToString().Replace(".ps1", ".extra.ps1")
-$gaaaay = $false
 $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
 $opSysHost = ([net.dns]::GetHostName())
 $opSysKernel = ""
@@ -116,6 +113,13 @@ $powershellVersion = $PSVersionTable.PSVersion
 $powershellVersionShort = $powershellVersion.Major.ToString() + "." + $powershellVersion.Minor.ToString()
 
 Set-Alias -Name clear -Value Reload-Shell -Option AllScope
+
+enum Themes {
+    Normal
+    Gay
+}
+
+[Themes]$global:currentTheme = [Themes]::Normal
 
 function Get-OSKernel {
     $opSys = ([Environment]::OSVersion.Platform.ToString()).Replace("Win32NT", "Windows")
@@ -257,61 +261,78 @@ function Get-OSUptime {
     }
 }
 
+function Set-Theme {
+    $currentDate = (get-date)
+    $currentMonth = (get-date).ToString("MM")
+    $currentDay = (get-date).ToString("dd")
+
+    switch($currentMonth)
+    {
+        "06"
+        {
+            $global:currentTheme = [Themes]::Gay
+        }
+    }
+}
+
+function Set-WelcomeMessageColors {
+    switch($global:currentTheme)
+    {
+        Gay
+        {
+            $global:logoColor1 = "DarkRed"
+            $global:logoColor2 = "Red"
+            $global:logoColor3 = "Yellow"
+            $global:logoColor4 = "Green"
+            $global:logoColor5 = "Cyan"
+            $global:logoColor6 = "Magenta"
+            $global:logoColor7 = "DarkMagenta"
+        }
+        default
+        {
+            $global:logoColor1 = "Cyan"
+            $global:logoColor2 = "Cyan"
+            $global:logoColor3 = "Cyan"
+            $global:logoColor4 = "Cyan"
+            $global:logoColor5 = "Cyan"
+            $global:logoColor6 = "Cyan"
+            $global:logoColor7 = "Cyan"
+        }
+    }
+}
+
 function Get-WelcomeMessage {
     $opSysRelease = Get-OSRelease
     $uptime = Get-OSUptime
 
-    if((get-date).ToString("MM") -eq "06")
-    {
-        $gaaaay = $true
-    }
-
-    if($gaaaay)
-    {
-        $logoColor1 = "DarkRed"
-        $logoColor2 = "Red"
-        $logoColor3 = "Yellow"
-        $logoColor4 = "Green"
-        $logoColor5 = "Cyan"
-        $logoColor6 = "Magenta"
-        $logoColor7 = "DarkMagenta"
-    }
-    else
-    {
-        $logoColor1 = "Cyan"
-        $logoColor2 = "Cyan"
-        $logoColor3 = "Cyan"
-        $logoColor4 = "Cyan"
-        $logoColor5 = "Cyan"
-        $logoColor6 = "Cyan"
-        $logoColor7 = "Cyan"
-    }
+    Set-WelcomeMessageColors
 
     Write-Host " "
-    Write-Host "       ############### " -f $logoColor1
-    Write-Host "      ##   ##########  " -f $logoColor2 -n
+    Write-Host "       ############### " -f $global:logoColor1
+    Write-Host "      ##   ##########  " -f $global:logoColor2 -n
     Write-Host "$ " -f Red -n
     Write-Host "PowerShell $powershellVersion" -f White
-    Write-Host "     ####   ########   " -f $logoColor3 -n
+    Write-Host "     ####   ########   " -f $global:logoColor3 -n
     Write-Host "# " -f Yellow -n
     Write-Host $Host.Name -f White
-    Write-Host "    ######   ######    " -f $logoColor4 -n
+    Write-Host "    ######   ######    " -f $global:logoColor4 -n
     Write-Host "~ " -f Green -n
     Write-Host $opSysRelease -f White
-    Write-Host "   ####   ########     " -f $logoColor5 -n
+    Write-Host "   ####   ########     " -f $global:logoColor5 -n
     Write-Host "@ " -f Cyan -n
     Write-Host $opSysHost -f White -n
     Write-Host "\" -f Gray -n
     Write-Host $user -f White
-    Write-Host "  ##   ###     ##      " -f $logoColor6 -n
+    Write-Host "  ##   ###     ##      " -f $global:logoColor6 -n
     Write-Host "+ " -f Magenta -n
     Write-Host $uptime -f White
-    Write-Host " ###############       " -f $logoColor7
+    Write-Host " ###############       " -f $global:logoColor7
     Write-Host " "
 }
 
 function Reload-Shell {
     Clear-Host
+    Set-Theme
     Get-WelcomeMessage
 }
 
@@ -365,7 +386,7 @@ if(Test-Path $extraCommandsLocation) {
 }
 
 if($Host.Name.ToString() -eq "ConsoleHost") {
-    Get-WelcomeMessage
+    Reload-Shell
 
     function prompt {
         $fullLocation = (Get-Location).ToString()
