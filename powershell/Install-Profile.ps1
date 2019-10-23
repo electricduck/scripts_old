@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.24
+# Ducky's PowerShell Profile, v19.7.25
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.24"
+    return "19.7.25"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -127,8 +127,6 @@ Set-Alias -Name clear -Value Reload-Shell -Option AllScope
 [Themes]$global:currentTheme = [Themes]::Normal
 
 function Get-OSRelease {
-    # TODO: Refactor this
-
     if($powershellVersion.Major -lt 6)
     {
         $global:opSys = [OS]::Windows
@@ -147,7 +145,7 @@ function Get-OSRelease {
         Windows
         {
             #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-            $Type = (Get-WmiObject -Class Win32_OperatingSystem).ProductType # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
+            $productType = (Get-WmiObject -Class Win32_OperatingSystem).ProductType # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
             $isServer = $false
 
             if($productType -eq 3)
