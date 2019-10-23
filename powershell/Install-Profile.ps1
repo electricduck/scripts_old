@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.23
+# Ducky's PowerShell Profile, v19.7.24
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.23"
+    return "19.7.24"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -147,10 +147,10 @@ function Get-OSRelease {
         Windows
         {
             #Get-ItemPropertyValue HKLM:\SOFTWARE\Microsoft\"Windows NT"\CurrentVersion "ProductName"
-            $caption = (get-ciminstance Win32_OperatingSystem).Caption # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
+            $Type = (Get-WmiObject -Class Win32_OperatingSystem).ProductType # TODO: Handle permission error when calling Get-CimInstance on non-Admin account
             $isServer = $false
 
-            if($caption.IndexOf("Windows Server") -gt 0)
+            if($productType -eq 3)
             {
                 $isServer = $true
             }
