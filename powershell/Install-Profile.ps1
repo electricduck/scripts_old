@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.25
+# Ducky's PowerShell Profile, v19.7.26
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.25"
+    return "19.7.26"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -162,11 +162,11 @@ function Get-OSRelease {
                     9200 { "Windows Server 2012" }
                     9600 { "Windows Server 2012 R2"}
                     14393 { "Windows Server 2016" }
-                    16299 { "Windows Server SARC 1709" }
-                    17134 { "Windows Server SARC 1803" }
-                    #17763 { "Windows Server SARC 1809" }
+                    16299 { "Windows Server SAC 1709" }
+                    17134 { "Windows Server SAC 1803" }
+                    #17763 { "Windows Server SAC 1809" }
                     17763 { "Windows Server 2019" }
-                    18362 { "Windows Server SARC 1903" }
+                    18362 { "Windows Server SAC 1903" }
                     default {
                         if($opSysVersion.Build -gt 9841)
                         {
