@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.27
+# Ducky's PowerShell Profile, v19.7.28
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.27"
+    return "19.7.28"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -360,7 +360,7 @@ function Set-WindowTitle {
 
 function Update-Profile {
     New-Item $profile -ItemType file -ErrorAction SilentlyContinue -Force | Out-Null
-    Invoke-WebRequest https://raw.githubusercontent.com/electricduck/scripts/master/powershell/Install-Profile.ps1 -out $profile | Out-Null
+    Invoke-WebRequest https://raw.githubusercontent.com/electricduck/plunge/master/Install-Profile.ps1 -out $profile | Out-Null
 
     Write-Host "Updated. " -f Gray -n
     Write-Host "Restart your shell to use!" -f White
