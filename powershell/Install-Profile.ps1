@@ -4,7 +4,7 @@
 # | |_| | |_| | (__|   <| |_| |/ /  / /
 # |____/ \__,_|\___|_|\_\\__, /_/  /_/ 
 # ====================== |___/ ========
-# Ducky's PowerShell Profile, v19.7.26
+# Ducky's PowerShell Profile, v19.7.27
 ################################################################################
 # #[Hostname\Username:Me]##################################################[x]#
 # #                                                                           #
@@ -74,7 +74,7 @@
 ################################################################################
 
 function Get-ProfileVersion {
-    return "19.7.26"
+    return "19.7.27"
 }
 
 if($MyInvocation.MyCommand.Name.ToLower() -eq "install-profile.ps1")
@@ -244,16 +244,17 @@ function Get-OSUptime {
     $totalHoursUptimeRounded = 0
     $totalDaysUptime = 0
 
-    Try {
-        $uptimeOutput = Get-Uptime
-
-        $totalHoursUptime = $uptimeOutput.TotalHours
-        $totalHoursUptimeRounded = [Math]::Round($totalHoursUptime)
-        $totalDaysUptime = $uptimeOutput.Days
-    } Catch {
+    if($powershellVersion.Major -lt 6)
+    {
         $windowsObject = Get-WmiObject win32_operatingsystem
         $uptimeOutput = (Get-Date) - ($windowsObject.ConvertToDateTime($windowsObject.lastbootuptime))
         
+        $totalHoursUptime = $uptimeOutput.TotalHours
+        $totalHoursUptimeRounded = [Math]::Round($totalHoursUptime)
+        $totalDaysUptime = $uptimeOutput.Days
+    } else {
+        $uptimeOutput = Get-Uptime
+
         $totalHoursUptime = $uptimeOutput.TotalHours
         $totalHoursUptimeRounded = [Math]::Round($totalHoursUptime)
         $totalDaysUptime = $uptimeOutput.Days
@@ -348,20 +349,12 @@ function Set-WindowTitle {
         [string]$newTitle
     )
 
-    if($global:opSys -eq [OS]::Windows) {
-        $shortLocation = Split-Path -leaf -path (Get-Location)
+    $shortLocation = Split-Path -leaf -path (Get-Location)
 
-        if($newTitle) {
-            $Host.ui.rawui.WindowTitle = $newTitle
-        } else {
-            $Host.ui.rawui.WindowTitle = $hostname + "\" + $user + ":" + $shortLocation
-        }
+    if($newTitle) {
+        $Host.ui.rawui.WindowTitle = $newTitle
     } else {
-        if($newTitle) {
-            $Host.ui.rawui.WindowTitle = $newTitle
-        } else {
-            $Host.ui.rawui.WindowTitle = $hostname + "\" + $user
-        }
+        $Host.ui.rawui.WindowTitle = $hostname + "\" + $user + ":" + $shortLocation
     }
 }
 
