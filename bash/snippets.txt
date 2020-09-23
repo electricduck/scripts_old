@@ -1,1 +1,6 @@
+--- 14-Mar-2020 (Ducky)
+ffmpeg -ss 00:00:05 -i video.mp4 -vframes 1 -vf "scale=640:-1" -qscale:v 5 thumb.jpg
+--- 11-Jan-2020 (Ducky)
+ffmpeg -i in.mp4 -ss 00:00:40 -t 00:00:21 -c copy -an out.mp4
+--- ? (Ducky)
 for dir in *; do ../../watermark.sh ../in/$dir ../watermarks/DuckyWatermark.png SouthEast +0+0 4 ../out/; done

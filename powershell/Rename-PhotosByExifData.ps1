@@ -10,25 +10,31 @@
     [bool]$ProcessVideos = $false,
     [string]$PhotoPrefix = "photo",
     [string]$VideoPrefix = "video",
+    [string]$SuffixSeparator = "-",
     [int]$HashSuffixLength = 8
 )
 
 $cameraModelDictionary = @{}
 
-$cameraModelDictionary.Add("iPhone4", "iPhone 4")                       # Apple iPhone 4
-$cameraModelDictionary.Add("CanonEOS70D", "EOS 70D")                    # Canon EOS 70D
-$cameraModelDictionary.Add("CanonEOS400DDIGITAL", "EOS 400D")           # Canon EOS 400D
-$cameraModelDictionary.Add("CanonPowerShotA1300", "PowerShot A1300")    # Canon PowerShot A1300
-$cameraModelDictionary.Add("HTCOne", "One M7")                          # HTC One / HTC One M7
-$cameraModelDictionary.Add("HTCOne_M8", "One M8")                       # HTC One M8
-$cameraModelDictionary.Add("NIKOND80", "D80")                           # Nikon D80
-$cameraModelDictionary.Add("NIKOND5100", "D5100")                       # Nikon D1500
-$cameraModelDictionary.Add("Lumia930", "Lumia 930")                     # Nokia Lumia 930
-$cameraModelDictionary.Add("Lumia1320", "Lumia 1320")                   # Nokia Lumia 1320
-$cameraModelDictionary.Add("VerneeMIX2", "MIX 2")                       # Vernee MIX 2
-$cameraModelDictionary.Add("MiA2", "Mi A2")				# Xiaomi Mi A2
-$cameraModelDictionary.Add("MiMax", "Mi Max")                           # Xiaomi Mi Max
-$cameraModelDictionary.Add("Redmi5A", "Redmi 5A")                       # Xiaomi Redmi 5A
+$cameraModelDictionary.Add("iPhone4", "iPhone 4")                       # 📱 Apple iPhone 4
+$cameraModelDictionary.Add("CanonEOS70D", "EOS 70D")                    # 📷 Canon EOS 70D
+$cameraModelDictionary.Add("CanonEOS400DDIGITAL", "EOS 400D")           # 📷 Canon EOS 400D
+$cameraModelDictionary.Add("CanonPowerShotA1300", "PowerShot A1300")    # 📷 Canon PowerShot A1300
+$cameraModelDictionary.Add("HTCOne", "One M7")                          # 📱 HTC One M7
+$cameraModelDictionary.Add("HTCOne_M8", "One M8")                       # 📱 HTC One M8
+$cameraModelDictionary.Add("LYA-L09", "Mate 20 Pro")                    # 📱 Huawei Mate 20 Pro [LYA-L09]
+$cameraModelDictionary.Add("ANE-LX1", "P20 Lite")                       # 📱 Huawei P20 Lite [ANE-LX1]
+$cameraModelDictionary.Add("moto g(7) power", "Moto G7 Power")          # 📱 Motorola Moto G7 Power
+$cameraModelDictionary.Add("NIKOND80", "D80")                           # 📷 Nikon D80
+$cameraModelDictionary.Add("NIKOND5100", "D5100")                       # 📷 Nikon D1500
+$cameraModelDictionary.Add("Lumia930", "Lumia 930")                     # 📱 Nokia Lumia 930
+$cameraModelDictionary.Add("Lumia1320", "Lumia 1320")                   # 📱 Nokia Lumia 1320
+$cameraModelDictionary.Add("SM-A705FN", "Galaxy A70")                   # 📱 Samsung Galaxy A70 [SM-A705FN]
+$cameraModelDictionary.Add("VerneeMIX2", "MIX 2")                       # 📱 Vernee MIX 2
+$cameraModelDictionary.Add("MiA2", "Mi A2")				# 📱 Xiaomi Mi A2
+$cameraModelDictionary.Add("MiA3", "Mi A3")				# 📱 Xiaomi Mi A3
+$cameraModelDictionary.Add("MiMax", "Mi Max")                           # 📱 Xiaomi Mi Max
+$cameraModelDictionary.Add("Redmi5A", "Redmi 5A")                       # 📱 Xiaomi Redmi 5A
 
 function Get-CameraModelForPhoto {
     param (
@@ -146,12 +152,12 @@ foreach($file in $allFiles) {
             if($IncludeDevice) { $newFilename += "." + $model }
         }
         if($IncludeOriginalName) { $newFilename += "." + $originalFilename }
-        if($IncludeProcessedTicks) { 
+        if($IncludeProcessedTicks) {
             if($UseHashForSuffix) {
                 $hash = Get-Md5Hash -File $file -HashLength $HashSuffixLength
-                $newFilename += "_" + $hash
+                $newFilename += $SuffixSeparator + $hash
             } else {
-                $newFilename += "_" + (Get-Date).Ticks
+                $newFilename += $SuffixSeparator + (Get-Date).Ticks
             }
         }
         $newFilename += $originalExtension.ToLower()
